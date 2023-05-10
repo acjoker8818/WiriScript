@@ -7,7 +7,7 @@ THIS FILE IS PART OF WIRISCRIPT
 
 json = require "pretty.json"
 local self = {}
-self.version = 30
+self.version = 29.5
 
 Config = {
 	controls = {
