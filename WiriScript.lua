@@ -7,7 +7,7 @@ THIS FILE IS PART OF WIRISCRIPT
 
 ---@diagnostic disable: local-limit
 local scriptStartTime = util.current_time_millis()
-gVersion = 29
+gVersion = 30
 util.require_natives(1663599433)
 
 local required <const> = {
