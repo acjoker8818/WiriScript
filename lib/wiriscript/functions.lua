@@ -7,7 +7,7 @@ THIS FILE IS PART OF WIRISCRIPT
 
 json = require "pretty.json"
 local self = {}
-self.version = 29.5
+self.version = 29.51
 
 Config = {
 	controls = {
@@ -1152,7 +1152,7 @@ function is_player_active(player, isPlaying, inTransition)
 		return false
 	end
 	if inTransition and
-	read_global.int(2657589 + (player * 466 + 1)) ~= 4 then
+	read_global.int(2657704 + (player * 463 + 1)) ~= 4 then -- func_21 build 2944
 		return false
 	end
 	return true
