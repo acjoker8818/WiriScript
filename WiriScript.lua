@@ -2176,7 +2176,7 @@ NetworkPlayerOpts = function(pId)
 
 	menu.toggle_loop(trollingOpt, translate("Trolling", "Hostile Traffic"), {}, "", function()
 		if not is_player_active(pId, false, true) then
-			return util.stop_thread()
+			return util.toast('Player not active'), util.stop_thread()
 		end
 		local targetPed = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(pId)
 		for _, vehicle in ipairs(get_vehicles_in_player_range(pId, 70.0)) do
@@ -2616,9 +2616,9 @@ NetworkPlayerOpts = function(pId)
 		not is_player_in_interior(pId) then
 
 			if not NETWORK.NETWORK_IS_SCRIPT_ACTIVE("am_gang_call", 0, true, 0) then
-				local bits_addr = memory.script_global(1853910 + (players.user() * 862 + 1) + 140)
+				local bits_addr = memory.script_global(1853988 + (players.user() * 867 + 1) + 140)
 				memory.write_int(bits_addr, SetBit(memory.read_int(bits_addr), 0))
-				write_global.int(1853910 + (players.user() * 862 + 1) + 141, pId)
+				write_global.int(1853988 + (players.user() * 867 + 1) + 141, pId)
 			else
 				notification:help(msg, HudColour.red)
 			end
@@ -2636,9 +2636,9 @@ NetworkPlayerOpts = function(pId)
 		not is_player_in_interior(pId) then
 
 			if not NETWORK.NETWORK_IS_SCRIPT_ACTIVE("am_gang_call", 1, true, 0) then
-				local bits_addr = memory.script_global(1853910 + (players.user() * 862 + 1) + 140)
+				local bits_addr = memory.script_global(1853988 + (players.user() * 867 + 1) + 140)
 				memory.write_int(bits_addr, SetBit(memory.read_int(bits_addr), 1))
-				write_global.int(1853910 + (players.user() * 862 + 1) + 141, pId)
+				write_global.int(1853988 + (players.user() * 867 + 1) + 141, pId)
 			else
 				notification:help(msg, HudColour.red)
 			end
@@ -6767,7 +6767,7 @@ local services <const> = menu.list(menu.my_root(), translate("Services", "Servic
 -------------------------------------
 
 function CanSpawnNanoDrone()
-	return BitTest(read_global.int(1962996), 23)
+	return BitTest(read_global.int(1963795), 23) -- bool func_7833() build 2944
 end
 
 function CanUseDrone()
@@ -6803,7 +6803,7 @@ function CanUseDrone()
 end
 
 menu.action(services, translate("Services", "Instant Nano Drone"), {}, "", function()
-	local p_bits = memory.script_global(1962996)
+	local p_bits = memory.script_global(1963795)
 	local bits = memory.read_int(p_bits)
 	if CanUseDrone() and not BitTest(bits, 24) then
 		TASK.CLEAR_PED_TASKS(players.user_ped())
@@ -6819,8 +6819,8 @@ end)
 menu.action(services, translate("Services", "Request Luxury Helicopter"), {}, "", function()
 	if NETWORK.NETWORK_IS_SESSION_ACTIVE() and
 	not NETWORK.NETWORK_IS_SCRIPT_ACTIVE("am_heli_taxi", -1, true, 0) then
-		write_global.int(2793046 + 888, 1)
-		write_global.int(2793046 + 895, 1)
+		write_global.int(2794162 + 893, 1)--int func_18147() build 2944
+		write_global.int(2794162 + 895, 1)
 	end
 end)
 
@@ -6832,16 +6832,16 @@ end)
 ---@return boolean
 function DoesPlayerOwnBandito(player)
 	if player ~= -1 then
-		local address = memory.script_global(1853910 + (player * 862 + 1) + 267 + 299)
+		local address = memory.script_global(1853988 + (player * 867 + 1) + 267 + 299) --func_13559 build 2944
 		return BitTest(memory.read_int(address), 4)
 	end
 	return false
 end
 
 menu.action(services, translate("Services", "Instant RC Bandito"), {}, "", function()
-	write_global.int(2793046 + 6874, 1)
+	write_global.int(2794162 + 6879, 1)
 	if not DoesPlayerOwnBandito(players.user()) then
-		local address = memory.script_global(1853910 + (players.user() * 862 + 1) + 267 + 299)
+		local address = memory.script_global(1853988 + (players.user() * 867 + 1) + 267 + 299)
 		memory.write_int(address, SetBit(memory.read_int(address), 4))
 	end
 end)
@@ -6854,16 +6854,16 @@ end)
 ---@return boolean
 function DoesPlayerOwnMinitank(player)
 	if player ~= -1 then
-		local address = memory.script_global(1853910 + (player * 862 + 1) + 267 + 428 + 2)
+		local address = memory.script_global(1853988 + (player * 867 + 1) + 267 + 428 + 2)
 		return BitTest(memory.read_int(address), 15)
 	end
 	return false
 end
 
 menu.action(services, translate("Services", "Instant RC Tank"), {}, "", function ()
-	write_global.int(2793046 + 6875, 1)
+	write_global.int(2794162 + 6880, 1)
 	if not DoesPlayerOwnMinitank(players.user()) then
-		local address = memory.script_global(1853910 + (players.user() * 862 + 1) + 267 + 428 + 2)
+		local address = memory.script_global(1853988 + (players.user() * 867 + 1) + 267 + 428 + 2)
 		memory.write_int(address, SetBit(memory.read_int(address), 15))
 	end
 end)
@@ -6898,7 +6898,7 @@ translate("Protections", "Notifies when a player is flying a drone or launched a
 ---@param player Player
 ---@return boolean
 local function isPlayerFlyingAnyDrone(player)
-	local address = memory.script_global(1853910 + (player * 862 + 1) + 267 + 365)
+	local address = memory.script_global(1853988 + (player * 867 + 1) + 267 + 365)
 	return BitTest(memory.read_int(address), 26)
 end
 
